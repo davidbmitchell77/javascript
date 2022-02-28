@@ -59,6 +59,118 @@ export default
             return currency.format(n);
         }
     },
+    date:
+    {
+        now: new Date(),
+        addDays: (n, d) =>
+        {
+            let result = ((d) ? d : new Date());
+            result.setDate(result.getDate() + n);
+            return result;
+        },
+        addHours: (n, d) =>
+        {
+            let result = ((d) ? d : new Date());
+            result.setHours(result.getHours() + n);
+            return result;
+        },
+        addMinutes: (n, d) =>
+        {
+            let result = ((d) ? d : new Date());
+            result.setMinutes(result.getMinutes() + n);
+            return result;
+        },
+        addSeconds: (n, d) =>
+        {
+            let result = ((d) ? d : new Date());
+            result.setSeconds(result.getSeconds() + n);
+            return result;
+        },
+        day: (d) => {
+            return ((d) ? d.getDay() : Date.getDay());
+        },
+        month: (d) => {
+            return (((d) ? d.getMonth() : new Date().getMonth()) + 1);
+        },
+        monthName: (d) => {
+            let months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+            return ((d) ? months[d.getMonth()] : months[new Date().getMonth()]);
+        },
+        year: (d) => {
+            return ((d) ? d.getFullYear() : new Date().getFullYear());
+        },
+        today: () =>
+        {
+            let months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday" ,"Saturday" ];
+            let today = new Date();
+            return `Today is: ${weekdays[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}.`;
+        },
+        isLeapYear: (d) =>
+        {
+            let result = false;
+
+            let year = (d ? d : new Date()).getFullYear();
+            if ((year & 3) == 0) {
+                result = ((year % 100) != 0 || (year % 400) == 0);
+            }
+
+            return result;
+        },
+        dayNumber: (d) =>
+        {
+            let result = 0;
+    
+            let date = ((d) ? d : new Date());
+
+            let jan = 0;
+            let feb = (jan + 31);
+            let mar = (feb + 28);
+            let apr = (mar + 31);
+            let may = (apr + 30);
+            let jun = (may + 31);
+            let jul = (jun + 30);
+            let aug = (jul + 31);
+            let sep = (aug + 31);
+            let oct = (sep + 30);
+            let nov = (oct + 31);
+            let dec = (nov + 30);
+
+            let isLeapYear = false;
+            if (date.getFullYear() % 4 === 0)
+            {
+                let year = date.getFullYear();
+                if ((year & 3) == 0) {
+                    isLeapYear = ((year % 100) != 0 || (year % 400) == 0);
+                }
+                if (isLeapYear) {
+                    mar += 1;
+                }
+            }
+
+            let month = (date.getMonth() + 1);
+            if (month ==  1) { result = jan; }
+            if (month ==  2) { result = feb; }
+            if (month ==  3) { result = mar; }
+            if (month ==  4) { result = apr; }
+            if (month ==  5) { result = may; }
+            if (month ==  6) { result = jun; }
+            if (month ==  7) { result = jul; }
+            if (month ==  8) { result = aug; }
+            if (month ==  9) { result = sep; }
+            if (month == 10) { result = oct; }
+            if (month == 11) { result = nov; }
+            if (month == 12) { result = dec; }
+    
+            result += date.getDate();
+
+            return result;
+        },
+        weekday: (d) => {
+            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday" ,"Saturday" ];
+            return ((d) ? weekdays[d.getDay()] : weekdays[new Date().getDay()]);
+        }
+    },
     json:
     {
         deserialize: (s) => {
@@ -115,6 +227,9 @@ export default
         },
         isOdd: (n) => {
             return !!(n % 2);
+        },
+        random: () => {
+            return (Math.floor(Math.random() * 1000));
         },
         round: (n, d) => {
         	return (Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d));
