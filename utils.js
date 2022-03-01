@@ -89,6 +89,17 @@ export default
         day: (d) => {
             return ((d) ? d.getDay() : Date.getDay());
         },
+        diff: (d1, d2) =>
+        {
+            let ms = Math.abs(d2.getTime() - d1.getTime());
+            return {
+                milliseconds: ms,
+                seconds: (ms / (1000)),
+                minutes: (ms / (1000 * 60)),
+                hours:   (ms / (1000 * 60 * 60)),
+            	days:    (ms / (1000 * 60 * 60 * 24))
+            };
+        },
         month: (d) => {
             return (((d) ? d.getMonth() : new Date().getMonth()) + 1);
         },
