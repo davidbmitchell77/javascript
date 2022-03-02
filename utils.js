@@ -136,9 +136,9 @@ export default
                     result = true;
                 }
                 */
-		if ((year % 100) != 0) || (year % 400) == 0)) {
+                if ((year % 100) != 0) || (year % 400) == 0)) {
                     result = true;
-		}
+                }
             }
 
             return result;
