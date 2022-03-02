@@ -86,6 +86,12 @@ export default
             result.setSeconds(result.getSeconds() + n);
             return result;
         },
+        addMilliseconds: (n, d) =>
+        {
+            let result = ((d) ? d : new Date());
+            result.setMilliseconds(result.getMilliseconds() + n);
+            return result;
+        },
         day: (d) => {
             return ((d) ? d.getDay() : Date.getDay());
         },
