@@ -121,9 +121,14 @@ export default
         {
             let result = false;
 
-            let year = (d ? d : new Date()).getFullYear();
-            if ((year & 3) == 0) {
-                result = ((year % 100) != 0 || (year % 400) == 0);
+            let exceptions = new Set([ 1900, 2100, 2200, 2300, 2500, 2700, 2900, 3000, 3100 ]);
+
+            let year = ((d) ? d : new Date().getFullYear());
+            if ((year % 4) == 0)
+            {
+                if (!exceptions.has(year)) {
+                    result = true;
+                }
             }
 
             return result;
