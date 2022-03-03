@@ -61,7 +61,9 @@ export default
     },
     date:
     {
-        now: new Date(),
+        now: () => {
+	    return (new Date());
+	}
         addDays: (n, d) =>
         {
             let result = ((d) ? d : new Date());
@@ -103,7 +105,7 @@ export default
                 seconds: (ms / (1000)),
                 minutes: (ms / (1000 * 60)),
                 hours:   (ms / (1000 * 60 * 60)),
-            	days:    (ms / (1000 * 60 * 60 * 24))
+                days:    (ms / (1000 * 60 * 60 * 24))
             };
         },
         month: (d) => {
