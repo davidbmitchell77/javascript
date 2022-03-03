@@ -62,8 +62,8 @@ export default
     date:
     {
         now: () => {
-	    return (new Date());
-	}
+            return (new Date());
+        },
         addDays: (n, d) =>
         {
             let result = ((d) ? d : new Date());
@@ -105,7 +105,7 @@ export default
                 seconds: (ms / (1000)),
                 minutes: (ms / (1000 * 60)),
                 hours:   (ms / (1000 * 60 * 60)),
-                days:    (ms / (1000 * 60 * 60 * 24))
+            	days:    (ms / (1000 * 60 * 60 * 24))
             };
         },
         month: (d) => {
@@ -129,17 +129,16 @@ export default
         {
             let result = false;
 
-            let year = ((d) ? d : new Date()).getFullYear();
-            if ((year % 4) == 0)
+            let date = ((d) ? d : new Date());
+            let year = ((Object.prototype.toString.call(date) === "[object Date]") ? date.getFullYear() : date);
+
+            if (year >= 1752)
             {
-                /*
-                let exceptions = new Set([ 1900, 2100, 2200, 2300, 2500, 2700, 2900, 3000, 3100 ]);
-                if (!exceptions.has(year)) {
-                    result = true;
-                }
-                */
-                if ((year % 100) != 0) || (year % 400) == 0)) {
-                    result = true;
+                 if ((year % 4) === 0)
+                 {
+                    if (((year % 100) != 0) || ((year % 400) === 0)) {
+                        result = true;
+                    }
                 }
             }
 
@@ -164,15 +163,14 @@ export default
             let nov = (oct + 31);
             let dec = (nov + 30);
 
-            let isLeapYear = false;
-            if (date.getFullYear() % 4 === 0)
+            let year = date.getFullYear();
+            if (year >= 1752)
             {
-                let year = date.getFullYear();
-                if ((year & 3) == 0) {
-                    isLeapYear = ((year % 100) != 0 || (year % 400) == 0);
-                }
-                if (isLeapYear) {
-                    mar += 1;
+                if ((year % 4) === 0)
+                {
+                    if (((year % 100) != 0) || ((year % 400) === 0)) {
+                        mar += 1;
+                    }
                 }
             }
 
