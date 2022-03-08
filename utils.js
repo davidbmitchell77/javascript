@@ -105,7 +105,7 @@ export default
                 seconds: (ms / (1000)),
                 minutes: (ms / (1000 * 60)),
                 hours:   (ms / (1000 * 60 * 60)),
-            	days:    (ms / (1000 * 60 * 60 * 24))
+                days:    (ms / (1000 * 60 * 60 * 24))
             };
         },
         month: (d) => {
@@ -132,9 +132,9 @@ export default
             let date = ((d) ? d : new Date());
             let year = ((Object.prototype.toString.call(date) === "[object Date]") ? date.getFullYear() : date);
 
-            if (year >= 1752)
+            if ((year % 4) === 0)
             {
-                 if ((year % 4) === 0)
+                if (year >= 1752)
                  {
                     if (((year % 100) != 0) || ((year % 400) === 0)) {
                         result = true;
@@ -164,9 +164,9 @@ export default
             let dec = (nov + 30);
 
             let year = date.getFullYear();
-            if (year >= 1752)
+            if ((year % 4) === 0)
             {
-                if ((year % 4) === 0)
+                if (year >= 1752)
                 {
                     if (((year % 100) != 0) || ((year % 400) === 0)) {
                         mar += 1;
@@ -249,16 +249,40 @@ export default
         	return n.toLocaleString("en-US");
         },
         isEven: (n) => {
-            return !(n % 2);
+            return (((n % 2) === 0) ? true : false);
         },
         isOdd: (n) => {
-            return !!(n % 2);
+            return (((n % 2) === 0) ? false : true);
+        },
+        isPrime: (n) =>
+        {
+            let result = true;
+
+            if ((isNaN(n))    )  { result = false;    } else
+            if ((!isFinite(n)))  { result = false;    } else
+            if ((n % 1)       )  { result = false;    } else
+            if ((n < 2)       )  { result = false;    } else
+            if ((n % 2) === 0 )  { result = (n == 2); } else
+            if ((n % 3) === 0 )  { result = (n == 3); } else
+            for (let i=5; i<=Math.sqrt(n); (i+=6))
+            {
+                if ((n % (i + 0)) == 0) { result = false; } else
+                if ((n % (i + 2)) == 0) { result = false; }
+            }
+
+            return result;
+        },
+        pi: () => {
+            return 3.14159;
         },
         random: () => {
             return (Math.floor(Math.random() * 1000));
         },
         round: (n, d) => {
         	return (Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d));
+        },
+        sqrt: (n) => {
+            return Math.sqrt(n);
         }
     },
     string:
