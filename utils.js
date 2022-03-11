@@ -414,10 +414,10 @@ export default
             return result;
         },
         ltrim: (s) => {
-            return ((s) ? s.ltrim() : s);
+            return ((s) ? s.trimStart() : s);
         },
         rtrim: (s) => {
-            return ((s) ? s.rtrim() : s);
+            return ((s) ? s.trimEnd() : s);
         },
         trim: (s) => {
             return ((s) ? s.trim() : s);
@@ -427,18 +427,25 @@ export default
             result = "";
             if (String(s))
             {
-                let space = "";
                 let words = s.toLowerCase().split(" ");
                 words.forEach
                 (
                     (word) =>
                     {
-                      let s = word.substring(0, 1).toUpperCase();
-                      s += word.substring(1, (word.length));
-                      result += space + s;
-                      space = " ";
+                        let dash = "";
+                        let syllables = word.split("-");
+                        for (let i=0; i<syllables.length; i++)
+                        {
+                            let syllable = syllables[i];
+                            let s = syllable.charAt(0).toUpperCase();
+                            s += syllable.substring(1, (syllable.length));
+                            result += (dash + s);
+                            dash = "-";
+                        }
+                        result = (result + " ");
                     }
                 )
+                result = result.trimEnd();
             }
             return result;
         },
