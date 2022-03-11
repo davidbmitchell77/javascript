@@ -121,7 +121,7 @@ export default
         today: () =>
         {
             let months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday" ,"Saturday" ];
+            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
             let today = new Date();
             return `Today is: ${weekdays[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}.`;
         },
@@ -193,7 +193,7 @@ export default
             return result;
         },
         weekday: (d) => {
-            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday" ,"Saturday" ];
+            let weekdays = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
             return ((d) ? weekdays[d.getDay()] : weekdays[new Date().getDay()]);
         }
     },
