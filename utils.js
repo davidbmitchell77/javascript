@@ -348,6 +348,9 @@ export default
             }
             return result;
         },
+        len: (s) => {
+            return ((s) ? s.length : 0);
+        },
         lpad: (s, c, n) =>
         {
             let result = s;
