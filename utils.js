@@ -55,7 +55,7 @@ export default
             return usd.format(n);
         },
         format: (n, s, d) => {
-            const currency = new Intl.NumberFormat('en-US', { style: "currency", currency: (s ? s.toUpperCase().trim() : "usd"), maximumFractionDigits: (d ? d : 2) });
+            const currency = new Intl.NumberFormat('en-US', { style: "currency", currency: (s ? s.toUpperCase().trim() : "USD"), maximumFractionDigits: (d ? d : 2) });
             return currency.format(n);
         }
     },
