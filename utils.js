@@ -175,17 +175,17 @@ export default
             }
 
             let month = (date.getMonth() + 1);
-            if (month ==  1) { result = jan; }
-            if (month ==  2) { result = feb; }
-            if (month ==  3) { result = mar; }
-            if (month ==  4) { result = apr; }
-            if (month ==  5) { result = may; }
-            if (month ==  6) { result = jun; }
-            if (month ==  7) { result = jul; }
-            if (month ==  8) { result = aug; }
-            if (month ==  9) { result = sep; }
-            if (month == 10) { result = oct; }
-            if (month == 11) { result = nov; }
+            if (month ==  1) { result = jan; } else
+            if (month ==  2) { result = feb; } else
+            if (month ==  3) { result = mar; } else
+            if (month ==  4) { result = apr; } else
+            if (month ==  5) { result = may; } else
+            if (month ==  6) { result = jun; } else
+            if (month ==  7) { result = jul; } else
+            if (month ==  8) { result = aug; } else
+            if (month ==  9) { result = sep; } else
+            if (month == 10) { result = oct; } else
+            if (month == 11) { result = nov; } else
             if (month == 12) { result = dec; }
     
             result += date.getDate();
@@ -195,6 +195,50 @@ export default
         weekday: (d) => {
             let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday" ,"Saturday" ];
             return ((d) ? weekdays[d.getDay()] : weekdays[new Date().getDay()]);
+        }
+    },
+    email:
+    {
+        isValid: (s) =>
+        {
+            let result = false;
+
+            if (s > "")
+            {
+                let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (s.match(pattern)) {
+                  result = true;
+                }
+            }
+
+            return result;
+        }
+    },
+    http:
+    {
+        geo: () =>
+        {
+            let url = "https://ipapi.co/json/";
+            let req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send();
+            console.info(JSON.parse(req.responseText));
+            return ((req.status === 200) ? JSON.parse(req.responseText) : req.status);
+        },
+        get: (url) =>
+        {
+            let req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send();
+            return ((req.status === 200) ? req.responseText : req.status);
+        },
+        ip: () =>
+        {
+            let url = "https://jsonip.com/";
+            let req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send();
+            return ((req.status === 200) ? JSON.parse(req.responseText).ip : req.status);
         }
     },
     json:
@@ -245,8 +289,8 @@ export default
     },
 	number:
     {
-    	format: (n) => {
-        	return n.toLocaleString("en-US");
+    	format: (n, s) => {
+        	return n.toLocaleString((s) ? s : "en-US");
         },
         isEven: (n) => {
             return (((n % 2) === 0) ? true : false);
@@ -279,7 +323,7 @@ export default
             return (Math.floor(Math.random() * 1000));
         },
         round: (n, d) => {
-        	return (Math.round((n + Number.EPSILON) * (10 ** d)) / (10 ** d));
+        	return (Math.round((n + Number.EPSILON) * (10 ** (d ? d : 0))) / (10 ** (d ? d : 0)));
         },
         sqrt: (n) => {
             return Math.sqrt(n);
@@ -287,6 +331,9 @@ export default
     },
     string:
     {
+        lcase: (s) => {
+            return ((s) ? s.toLowerCase() : s);
+        },
         left: (s, chars) =>
         {
             let result = null;
@@ -301,6 +348,30 @@ export default
             }
             return result;
         },
+        lpad: (s, c, n) =>
+        {
+            let result = s;
+
+            if (s.length < n)
+            {
+                let s1 = ((s) ? s : "");
+                let s2 = "";
+
+                for (let i=0; i<n; i++) {
+                    s2 += c;
+                }
+
+                result = (s2 + s1);
+
+                if (result.length > n)
+                {
+                    let len = result.length;
+                    result = result.substring(len, (len - n));
+                }
+            }
+
+            return result;
+        },
         mid: (s, startpos, endpos) => {
             return s.substring(startpos, endpos);
         },
@@ -309,16 +380,70 @@ export default
             let result = null;
             if (s && chars > 0)
             {
-                if (chars > String(s).length) {
+                if (chars > s.length) {
                    result = s;
                 }
                 else
                 {
-                   let len = String(s).length;
-                   result = String(s).substring(len, (len - chars));
+                   let len = s.length;
+                   result = s.substring(len, (len - chars));
                 }
             }
             return result;
+        },
+        rpad: (s, c, n) =>
+        {
+            let result = s;
+
+            if (s.length < n)
+            {
+                let s1 = ((s) ? s : "");
+                let s2 = "";
+
+                for (let i=0; i<n; i++) {
+                    s2 += c;
+                }
+
+                result = (s1 + s2);
+
+                if (result.length > n) {
+                    result = result.substring(0, n);
+                }
+            }
+
+            return result;
+        },
+        ltrim: (s) => {
+            return ((s) ? s.ltrim() : s);
+        },
+        rtrim: (s) => {
+            return ((s) ? s.rtrim() : s);
+        },
+        trim: (s) => {
+            return ((s) ? s.trim() : s);
+        },
+        tcase: (s) =>
+        {
+            result = "";
+            if (String(s))
+            {
+                let space = "";
+                let words = s.toLowerCase().split(" ");
+                words.forEach
+                (
+                    (word) =>
+                    {
+                      let s = word.substring(0, 1).toUpperCase();
+                      s += word.substring(1, (word.length));
+                      result += space + s;
+                      space = " ";
+                    }
+                )
+            }
+            return result;
+        },
+        ucase: (s) => {
+            return ((s) ? s.toUpperCase() : s);
         }
     },
     window:
