@@ -121,7 +121,7 @@ export default
         today: () =>
         {
             let months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-            let weekdays = [ "Sunday", "Monday" ,"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
+            let weekdays = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
             let today = new Date();
             return `Today is: ${weekdays[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}.`;
         },
@@ -262,29 +262,38 @@ export default
             return JSON.stringify(obj, null, 2);
         }
     },
-    log: (message) =>
+    log: ( ...args ) =>
     {
-        let messageType = Object.prototype.toString.call(message);
+        let messageType = "";
+
+        if (args)
+        {
+            messageType = Object.prototype.toString.call(args[0]);
+
+            if (args.length >= 2) {
+                messageType = Object.prototype.toString.call(args[1]);
+            }
+        }
 
         switch (messageType.toLowerCase())
         {
             case "[object string]":
-                console.log(message);
+                console.log( ...args );
                 break;
             case "[object number]":
-                console.log(message);
+                console.log( ...args );
                 break;
             case "[object array]":
-                console.info(message);
+                console.info( ...args );
                 break;
             case "[object object]":
-                console.info(message);
+                console.info( ...args )
                 break;
             case "[object error]":
-                console.error(message);
+                console.error( ...args );
                 break;
             default:
-                console.warn(messageType, message);
+                console.warn(messageType, ...args );
         }
     },
 	number:
