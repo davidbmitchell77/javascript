@@ -216,15 +216,6 @@ export default
     },
     http:
     {
-        geo: () =>
-        {
-            let url = "https://ipapi.co/json/";
-            let req = new XMLHttpRequest();
-            req.open("GET", url, false);
-            req.send();
-            console.info(JSON.parse(req.responseText));
-            return ((req.status === 200) ? JSON.parse(req.responseText) : req.status);
-        },
         get: (url) =>
         {
             let req = new XMLHttpRequest();
@@ -262,38 +253,29 @@ export default
             return JSON.stringify(obj, null, 2);
         }
     },
-    log: ( ...args ) =>
+    log: (message) =>
     {
-        let messageType = "";
-
-        if (args)
-        {
-            messageType = Object.prototype.toString.call(args[0]);
-
-            if (args.length >= 2) {
-                messageType = Object.prototype.toString.call(args[1]);
-            }
-        }
+        let messageType = Object.prototype.toString.call(message);
 
         switch (messageType.toLowerCase())
         {
             case "[object string]":
-                console.log( ...args );
+                console.log(message);
                 break;
             case "[object number]":
-                console.log( ...args );
+                console.log(message);
                 break;
             case "[object array]":
-                console.info( ...args );
+                console.info(message);
                 break;
             case "[object object]":
-                console.info( ...args )
+                console.info(message);
                 break;
             case "[object error]":
-                console.error( ...args );
+                console.error(message);
                 break;
             default:
-                console.warn(messageType, ...args );
+                console.warn(messageType, message);
         }
     },
 	number:
@@ -469,41 +451,49 @@ export default
     {
         browser: () =>
         {
-            var ua = navigator.userAgent;
-            var m = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            let name = null;
+            let version = null;
+            let os = null;
 
-            if (/trident/i.test(m[1]))
-            {
-                let temp = (/\brv[ :]+(\d+)/g.exec(ua) || []); 
-                return {
-                    name: "IE",
-                    version: (temp[1] || "")
-                };
-            }   
-
-            if (m[1] === "Chrome")
-            {
-                let temp = ua.match(/\bOPR|Edge\/(\d+)/);
-                if (temp != null)
+            window.navigator.userAgent.split(") ").forEach
+            (
+                (s) =>
                 {
-                    return {
-                        name:"Opera",
-                        version:temp[1]
-                    };
+                    if (!os)
+                    {
+                        if (s.toLowerCase().startsWith("mozilla")) {
+                            os = (s.split("(")[1].split(";")[((s.includes("Windows")) ? 0 : 1)]).trim();
+                        }
+                    }
+
+                    if (os)
+                    {
+                        if (s.toLowerCase().includes("brave"  )) { name = "Brave";   } else
+                        if (s.toLowerCase().includes("edg"    )) { name = "Edge";    } else
+                        if (s.toLowerCase().includes("firefox")) { name = "Firefox"; } else
+                        if (s.toLowerCase().includes("samsung")) { name = "Samsung"  } else
+                        if (s.toLowerCase().includes("chrome" )) { name = "Chrome";  } else
+                        if (s.toLowerCase().includes("opera"  )) { name = "Opera"    } else
+                        if (s.toLowerCase().includes("safari" )) { name = "Safari";  }
+                    }
+
+                    if (name)
+                    {
+                        if (name === "Firefox") {
+                            version = s.split("/")[2].trim();
+                        }
+                        else {
+                            version = s.split("/")[1].split(" ")[0].trim();
+                        }
+                    }
                 }
-            }   
+            );
 
-            m = ((m[2]) ? [ m[1], m[2] ] : [ navigator.appName, navigator.appVersion, '-?' ]);
-
-            let temp = ua.match(/version\/(\d+)/i);
-            if (temp != null) {
-                m.splice(1, 1, temp[1]);
+            if (window.navigator.brave) {
+                name = "Brave";
             }
 
-            return {
-                name: m[0],
-                version: m[1]
-            };
+            return { "name": name, "version": version, "os": os };
         },
         popupCenter: (url, title, w, h) =>
         {
